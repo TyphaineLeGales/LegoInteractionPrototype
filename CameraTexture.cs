@@ -18,41 +18,33 @@ public class CameraTexture : MonoBehaviour
             camTex = new WebCamTexture(); //input height = 720 iput width=1280 16:9 ratio length of pixel array 256
             rasterizedTex = new Texture2D(camTex.width/texScale, camTex.height/texScale); //Array of 1024 pixels
             pixels = camTex.GetPixels();
-            newPixelArray = new Color[pixels.Length/texScale];
+            
         }
-         GetComponent<Renderer>().material.mainTexture = camTex ;
        
-
         if(!camTex.isPlaying)
         {
             camTex.Play();
         }
         
+        GetComponent<Renderer>().material.mainTexture = rasterizedTex ;
+        
     }
-
 
     // Update is called once per frame
     void Update()
     {
-        
-        int counter = 0;
-        for(int x = 0 ; x<pixels.Length; x+=texScale){
-            newPixelArray[counter] = pixels[x];
-            counter += 1;
-        }   
+        pixels = camTex.GetPixels();
+        newPixelArray = new Color[pixels.Length/texScale];
+
+        for(int x = 0 ; x<newPixelArray.Length; x+=1){
+
+            newPixelArray[x] = pixels[x*texScale];
+        }
             
         rasterizedTex.SetPixels(newPixelArray);
         
         Debug.Log(rasterizedTex.GetPixel(1, 1));
         Debug.Log(camTex.GetPixel(1, 1));
-            // for(int i = 0; i < 10; i++) {
-            //     Debug.Log(pixels[i]);
-            // }
-        // for(int x = 0; x < 32; x++){
-        //     newPixelArray[x] = pixels[x*2];
-        // }
-
-      //  rasterizedTex.SetPixels(newPixelArray, 1);
         
     }
 }
