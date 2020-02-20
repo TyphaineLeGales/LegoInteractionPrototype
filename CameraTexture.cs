@@ -8,6 +8,7 @@ public class CameraTexture : MonoBehaviour
     private Texture2D rasterizedTex;
     public Color[] pixels;
     public Color[] newPixelArray;
+    private int texScale = 10;
    
     // Start is called before the first frame update
     void Start()
@@ -15,7 +16,17 @@ public class CameraTexture : MonoBehaviour
         if(camTex == null)
         {
             camTex = new WebCamTexture(); //input height = 720 iput width=1280 16:9 ratio
-            rasterizedTex = new Texture2D(32, 32);        
+            rasterizedTex = new Texture2D(camTex.width/texScale, camTex.height/texScale); //Array of 1024 pixels
+
+            pixels = camTex.GetPixels();
+
+            int counter = 0;
+            for(int x = 0 ; x<10; x+=1){
+                newPixelArray[counter] = pixels[x];
+                counter += 1;
+            }  
+
+            Debug.Log(newPixelArray.Length);     
             
         }
 
@@ -33,7 +44,7 @@ public class CameraTexture : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //  pixels = camTex.GetPixels();
+      
             // for(int i = 0; i < 10; i++) {
             //     Debug.Log(pixels[i]);
             // }
