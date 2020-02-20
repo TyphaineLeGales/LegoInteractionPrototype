@@ -8,30 +8,20 @@ public class CameraTexture : MonoBehaviour
     private Texture2D rasterizedTex;
     public Color[] pixels;
     public Color[] newPixelArray;
-    private int texScale = 10;
+    private int texScale = 8;
    
     // Start is called before the first frame update
     void Start()
     {
         if(camTex == null)
         {
-            camTex = new WebCamTexture(); //input height = 720 iput width=1280 16:9 ratio
+            camTex = new WebCamTexture(); //input height = 720 iput width=1280 16:9 ratio length of pixel array 256
             rasterizedTex = new Texture2D(camTex.width/texScale, camTex.height/texScale); //Array of 1024 pixels
-
             pixels = camTex.GetPixels();
-
-            int counter = 0;
-            for(int x = 0 ; x<10; x+=1){
-                newPixelArray[counter] = pixels[x];
-                counter += 1;
-            }  
-
-            Debug.Log(newPixelArray.Length);     
-            
+            newPixelArray = new Color[pixels.Length/texScale];
         }
-
          GetComponent<Renderer>().material.mainTexture = camTex ;
-        //Debug.Log(camTex.GetPixels());
+       
 
         if(!camTex.isPlaying)
         {
@@ -44,7 +34,17 @@ public class CameraTexture : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      
+        
+        int counter = 0;
+        for(int x = 0 ; x<pixels.Length; x+=texScale){
+            newPixelArray[counter] = pixels[x];
+            counter += 1;
+        }   
+            
+        rasterizedTex.SetPixels(newPixelArray);
+        
+        Debug.Log(rasterizedTex.GetPixel(1, 1));
+        Debug.Log(camTex.GetPixel(1, 1));
             // for(int i = 0; i < 10; i++) {
             //     Debug.Log(pixels[i]);
             // }
