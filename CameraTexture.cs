@@ -8,7 +8,7 @@ public class CameraTexture : MonoBehaviour
     private Texture2D rasterizedTex;
     public Color[] pixels;
     public Color[] newPixelArray;
-    private int texScale = 8;
+    private int texScale = 2;
    
     // Start is called before the first frame update
     void Start()
@@ -42,9 +42,10 @@ public class CameraTexture : MonoBehaviour
         }
             
         rasterizedTex.SetPixels(newPixelArray);
+        rasterizedTex.Apply();
         
-        Debug.Log(rasterizedTex.GetPixel(1, 1));
-        Debug.Log(camTex.GetPixel(1, 1));
+        // Debug.Log("rasterized tex :" + rasterizedTex.GetPixel(1, 1));
+        // Debug.Log("original tex :"+  camTex.GetPixel(1, 1));
         
     }
 }
