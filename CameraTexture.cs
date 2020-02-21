@@ -11,6 +11,8 @@ public class CameraTexture : MonoBehaviour
 
     public bool rasterized;
     public int texScale = 32;
+    public Transform prefab;
+    public float size = 0.1f;
 
     void Start()
     {
@@ -44,6 +46,10 @@ public class CameraTexture : MonoBehaviour
            for(int x = 0; x< rasterizedTex.width; x++){
                Color color = camTex.GetPixel(x*texScale, y*texScale);
                rasterizedTex.SetPixel(x, y, color);
+                Transform t = Instantiate(prefab);
+                t.localPosition =  new Vector3(x,0, y);
+                t.transform.localScale = new Vector3(size, size, size);
+                t.GetComponent<Renderer>().material.color = color;
             //    GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             //    cube.transform.position = new Vector3(x*16,0, y*9);
             //    cube.transform.localScale = new Vector3(1, 1, 1);
@@ -52,6 +58,6 @@ public class CameraTexture : MonoBehaviour
             }  
         } 
 
-        rasterizedTex.Apply();      
+        rasterizedTex.Apply();   
     }
 }
