@@ -326,8 +326,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0e14ced1206d374d9ea9f1397337596, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rasterized: 0
-  texScale: 10
+  rasterized: 1
+  texScale: 512
 --- !u!64 &2080268949
 MeshCollider:
   m_ObjectHideFlags: 0
