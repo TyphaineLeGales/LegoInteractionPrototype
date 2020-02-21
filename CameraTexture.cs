@@ -8,9 +8,9 @@ public class CameraTexture : MonoBehaviour
     private Texture2D rasterizedTex;
     private Color[] pixels;
     private Color[] newPixelArray;
-    private Transform t;
     private Transform[] instances;
 
+    public bool debugTex;
     public bool rasterized;
     public int texScale = 32;
     public Transform prefab;
@@ -32,7 +32,6 @@ public class CameraTexture : MonoBehaviour
         rasterizedTex = new Texture2D(camTex.width/texScale, camTex.height/texScale); //Array of 1024 pixels
         newPixelArray = new Color[pixels.Length/texScale];
         instances = new Transform[texScale*texScale];
-        Debug.Log(instances.Length);
 
         if(rasterized == true) {
             GetComponent<Renderer>().material.mainTexture = rasterizedTex ;
@@ -43,12 +42,10 @@ public class CameraTexture : MonoBehaviour
         int arrayIndex = 0;
         for(int y = 0; y< rasterizedTex.height; y++){
            for(int x = 0; x< rasterizedTex.width; x++){
-            t = Instantiate(prefab, new Vector3(x, 0, y), Quaternion.identity);
-            instances[arrayIndex]= t;
+            instances[arrayIndex]= Instantiate(prefab, new Vector3(x, 0, y), Quaternion.identity);
             arrayIndex += 1;
            }
         }
-
 
     }
 
@@ -58,15 +55,20 @@ public class CameraTexture : MonoBehaviour
         int arrayIndex = 0;
         for(int y = 0; y< rasterizedTex.height; y++){
            for(int x = 0; x< rasterizedTex.width; x++){
-               Color color = camTex.GetPixel(x*texScale, y*texScale);
-               rasterizedTex.SetPixel(x, y, color);
-                // Transform t = Instantiate(prefab);
-                // t.localPosition =  new Vector3(x,0, y);
-                // t.transform.localScale = new Vector3(size, size, size);
+                Color color = camTex.GetPixel(x*texScale, y*texScale);
+                rasterizedTex.SetPixel(x, y, color);
+                // if(color.a > color.b && color.a > color.g) {
+                //     instances[arrayIndex].GetComponent<Renderer>().material.color = new Color(1, 0,0,1);
+                // } else if(color.b > color.a && color.b > color.g) {
+                //     instances[arrayIndex].GetComponent<Renderer>().material.color = new Color(0, 0,1,1);
+                // } else if(color.g > color.a && color.g > color.b) {
+                //     instances[arrayIndex].GetComponent<Renderer>().material.color = new Color(0, 1,0,1);
+                // } else {
+                //      instances[arrayIndex].GetComponent<Renderer>().material.color = new Color(0, 0,0,0);
+                // }
+
                 instances[arrayIndex].GetComponent<Renderer>().material.color = color;
                 arrayIndex += 1;
-                // Debug.Log(arrayIndex);
-
             }  
         } 
 
