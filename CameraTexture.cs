@@ -8,6 +8,8 @@ public class CameraTexture : MonoBehaviour
     private Texture2D rasterizedTex;
     private Color[] pixels;
     private Color[] newPixelArray;
+    private Transform t;
+    private Transform[] instances;
 
     public bool rasterized;
     public int texScale = 32;
@@ -29,31 +31,41 @@ public class CameraTexture : MonoBehaviour
         
         rasterizedTex = new Texture2D(camTex.width/texScale, camTex.height/texScale); //Array of 1024 pixels
         newPixelArray = new Color[pixels.Length/texScale];
+        instances = new Transform[texScale*texScale];
+        Debug.Log(instances.Length);
 
         if(rasterized == true) {
             GetComponent<Renderer>().material.mainTexture = rasterizedTex ;
         } else {
             GetComponent<Renderer>().material.mainTexture = camTex ;
         }
+        
+        int arrayIndex = 0;
+        for(int y = 0; y< rasterizedTex.height; y++){
+           for(int x = 0; x< rasterizedTex.width; x++){
+            t = Instantiate(prefab, new Vector3(x, 0, y), Quaternion.identity);
+            instances[arrayIndex]= t;
+            arrayIndex += 1;
+           }
+        }
+
 
     }
 
     void Update()
     {
         pixels = camTex.GetPixels();
-
+        int arrayIndex = 0;
         for(int y = 0; y< rasterizedTex.height; y++){
            for(int x = 0; x< rasterizedTex.width; x++){
                Color color = camTex.GetPixel(x*texScale, y*texScale);
                rasterizedTex.SetPixel(x, y, color);
-                Transform t = Instantiate(prefab);
-                t.localPosition =  new Vector3(x,0, y);
-                t.transform.localScale = new Vector3(size, size, size);
-                t.GetComponent<Renderer>().material.color = color;
-            //    GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            //    cube.transform.position = new Vector3(x*16,0, y*9);
-            //    cube.transform.localScale = new Vector3(1, 1, 1);
-            //    cube.GetComponent<Renderer>().material.color = color;
+                // Transform t = Instantiate(prefab);
+                // t.localPosition =  new Vector3(x,0, y);
+                // t.transform.localScale = new Vector3(size, size, size);
+                instances[arrayIndex].GetComponent<Renderer>().material.color = color;
+                arrayIndex += 1;
+                // Debug.Log(arrayIndex);
 
             }  
         } 
