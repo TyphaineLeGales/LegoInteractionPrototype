@@ -307,7 +307,7 @@ GameObject:
   - component: {fileID: 2080268950}
   - component: {fileID: 2080268948}
   m_Layer: 0
-  m_Name: Rasterized
+  m_Name: Instancer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -325,6 +325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0e14ced1206d374d9ea9f1397337596, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugTex: 0
   rasterized: 1
   texScale: 32
   prefab: {fileID: 1449671316064593356, guid: ca49dd09da967ad48ac201cf4f588b63, type: 3}
@@ -336,7 +337,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2080268947}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
