@@ -6,8 +6,8 @@ public class CameraTexture : MonoBehaviour
 {
     static WebCamTexture camTex;
     private Texture2D rasterizedTex;
-    private Color[] pixels;
-    private Color[] newPixelArray;
+    private Color32[] pixels;
+    private Color32[] newPixelArray;
     private Transform[] instances;
 
     public bool debugTex;
@@ -21,7 +21,7 @@ public class CameraTexture : MonoBehaviour
         if(camTex == null)
         {
             camTex = new WebCamTexture(); //input height = 720 iput width=1280 16:9 ratio length of pixel array 256
-            pixels = camTex.GetPixels();
+            pixels = camTex.GetPixels32();
         }
        
         if(!camTex.isPlaying)
@@ -30,7 +30,7 @@ public class CameraTexture : MonoBehaviour
         }
         
         rasterizedTex = new Texture2D(camTex.width/texScale, camTex.height/texScale); //Array of 1024 pixels
-        newPixelArray = new Color[pixels.Length/texScale];
+        newPixelArray = new Color32[pixels.Length/texScale];
         instances = new Transform[texScale*texScale];
 
         if(rasterized == true) {
@@ -51,27 +51,28 @@ public class CameraTexture : MonoBehaviour
 
     void Update()
     {
-        pixels = camTex.GetPixels();
+        pixels = camTex.GetPixels32();
         int arrayIndex = 0;
         for(int y = 0; y< rasterizedTex.height; y++){
            for(int x = 0; x< rasterizedTex.width; x++){
-                Color color = camTex.GetPixel(x*texScale, y*texScale);
+                Color32 color = camTex.GetPixel(x*texScale, y*texScale);
                 rasterizedTex.SetPixel(x, y, color);
-                // if(color.a > color.b && color.a > color.g) {
-                //     instances[arrayIndex].GetComponent<Renderer>().material.color = new Color(1, 0,0,1);
-                // } else if(color.b > color.a && color.b > color.g) {
-                //     instances[arrayIndex].GetComponent<Renderer>().material.color = new Color(0, 0,1,1);
-                // } else if(color.g > color.a && color.g > color.b) {
-                //     instances[arrayIndex].GetComponent<Renderer>().material.color = new Color(0, 1,0,1);
-                // } else {
-                //      instances[arrayIndex].GetComponent<Renderer>().material.color = new Color(0, 0,0,0);
-                // }
+                Debug.Log (color.r);
+                if(color.a <180) {
+                //     // instances[arrayIndex].GetComponent<Renderer>().material.color = new Color(1f,0f,0f, 1f);
+                //     Debug.Log(arrayIndex);
+                   // instances[arrayIndex].GetComponent<MeshRenderer>().enabled = false;
+                    instances[arrayIndex].GetComponent<Renderer>().material.color = new Color32(255,0,0, 255);
+                } else {
+                   // instances[arrayIndex].GetComponent<MeshRenderer>().enabled = true;
+                    instances[arrayIndex].GetComponent<Renderer>().material.color = new Color32(color.r,color.g,color.b, 255);
+                }
 
-                instances[arrayIndex].GetComponent<Renderer>().material.color = color;
                 arrayIndex += 1;
             }  
-        } 
+        }
 
         rasterizedTex.Apply();   
+
     }
 }
