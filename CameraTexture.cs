@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class CameraTexture : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class CameraTexture : MonoBehaviour
     private Color32[] pixels;
     private Color32[] newPixelArray;
     private Transform[] instances;
+    private GameObject selected;
 
     public bool debugTex;
     public bool rasterized;
@@ -57,7 +59,7 @@ public class CameraTexture : MonoBehaviour
            for(int x = 0; x< rasterizedTex.width; x++){
                 Color32 color = camTex.GetPixel(x*texScale, y*texScale);
                 rasterizedTex.SetPixel(x, y, color);
-                Debug.Log (color.r);
+                // Debug.Log (color.r);
                 if(color.a <180) {
                 //     // instances[arrayIndex].GetComponent<Renderer>().material.color = new Color(1f,0f,0f, 1f);
                 //     Debug.Log(arrayIndex);
@@ -72,7 +74,13 @@ public class CameraTexture : MonoBehaviour
             }  
         }
 
-        rasterizedTex.Apply();   
+        rasterizedTex.Apply();
+        Debug.Log( GetColorOfSelected());   
 
+    }
+
+    private Color32 GetColorOfSelected()
+    {
+        return Selection.activeGameObject.GetComponent<Renderer>().material.color;
     }
 }
