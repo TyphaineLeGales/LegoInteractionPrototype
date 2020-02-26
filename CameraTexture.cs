@@ -59,23 +59,22 @@ public class CameraTexture : MonoBehaviour
            for(int x = 0; x< rasterizedTex.width; x++){
                 Color32 color = camTex.GetPixel(x*texScale, y*texScale);
                 rasterizedTex.SetPixel(x, y, color);
-                // Debug.Log (color.r);
-                // if(color.r > 100 && color.g > 100 && color.b) {
+                 if(color.r > 100 && color.g > 100 && color.b > 100) {
                 //     // instances[arrayIndex].GetComponent<Renderer>().material.color = new Color(1f,0f,0f, 1f);
                 //     Debug.Log(arrayIndex);
-                   // instances[arrayIndex].GetComponent<MeshRenderer>().enabled = false;
-                    instances[arrayIndex].GetComponent<Renderer>().material.color = new Color32(255,0,0, 255);
-                // } else {
-                   // instances[arrayIndex].GetComponent<MeshRenderer>().enabled = true;
+                    instances[arrayIndex].GetComponent<MeshRenderer>().enabled = false;
+                    //instances[arrayIndex].GetComponent<Renderer>().material.color = new Color32(255,255,255, 255);
+                 } else {
+                    instances[arrayIndex].GetComponent<MeshRenderer>().enabled = true;
                     instances[arrayIndex].GetComponent<Renderer>().material.color = new Color32(color.r,color.g,color.b, 255);
-                // }
+                 }
 
                 arrayIndex += 1;
             }  
         }
 
         rasterizedTex.Apply();
-        Debug.Log(isWhite(GetColorOfSelected()));   
+        Debug.Log(GetColorOfSelected());   
 
     }
 
