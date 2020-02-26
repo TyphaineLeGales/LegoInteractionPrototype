@@ -17,6 +17,11 @@ public class CameraTexture : MonoBehaviour
     public int texScale = 32;
     public Transform prefab;
     public float size = 0.1f;
+    public bool renderOther;
+
+
+    [Range(0,100)]
+    public int stepMod = 5;
 
     void Start()
     {
@@ -53,37 +58,10 @@ public class CameraTexture : MonoBehaviour
 
     void Update()
     {
-        pixels = camTex.GetPixels32();
-        int arrayIndex = 0;
-        for(int y = 0; y< rasterizedTex.height; y++){
-           for(int x = 0; x< rasterizedTex.width; x++){
-                Color32 color = camTex.GetPixel(x*texScale, y*texScale);
-                rasterizedTex.SetPixel(x, y, color);
-                 if(color.r > 100 && color.g > 100 && color.b > 100) { //white
-                    instances[arrayIndex].GetComponent<MeshRenderer>().enabled = false;
-                 } else if(color.r > 180 && color.g < 80 && color.b <80 ){  //red
-                    instances[arrayIndex].GetComponent<MeshRenderer>().enabled = true;
-                    instances[arrayIndex].GetComponent<Renderer>().material.color = new Color32(255,0,0, 255); 
-                 } else if(color.r > 100 && color.g > 100 && color.b < 80){  //yellow
-                    instances[arrayIndex].GetComponent<MeshRenderer>().enabled = true;
-                    instances[arrayIndex].GetComponent<Renderer>().material.color = new Color32(230,230,0, 255);
-                 } else if(color.b > 180 && color.r < 80 && color.g <80){  //blue
-                    instances[arrayIndex].GetComponent<MeshRenderer>().enabled = true;
-                    instances[arrayIndex].GetComponent<Renderer>().material.color = new Color32(0,0,255, 255);
-                 }
-                 else {
-                   instances[arrayIndex].GetComponent<MeshRenderer>().enabled = false;
-                //    instances[arrayIndex].GetComponent<MeshRenderer>().enabled = true;
-                //    instances[arrayIndex].GetComponent<Renderer>().material.color = new Color32(color.r,color.g,color.b, 255);
-                 }
-
-                arrayIndex += 1;
-            }  
+       
+        if(Time.frameCount % stepMod == 0) {  
+                TexToInstance();
         }
-
-        rasterizedTex.Apply();
-        Debug.Log(GetColorOfSelected());   
-
     }
 
     private Color32 GetColorOfSelected()
@@ -97,5 +75,41 @@ public class CameraTexture : MonoBehaviour
          } else {
            return false;
          }
+    }
+
+    private void TexToInstance() 
+    {
+         pixels = camTex.GetPixels32();
+        int arrayIndex = 0;
+        for(int y = 0; y< rasterizedTex.height; y++){
+           for(int x = 0; x< rasterizedTex.width; x++){
+                Color32 color = camTex.GetPixel(x*texScale, y*texScale);
+                rasterizedTex.SetPixel(x, y, color);  
+                if(color.r > 100 && color.g > 100 && color.b > 100) {
+                    instances[arrayIndex].GetComponent<MeshRenderer>().enabled = true;
+                    instances[arrayIndex].GetComponent<Renderer>().material.color = new Color32(255,255,255, 255);      
+                } else if(color.r > 180 && color.g < 80 && color.b <80 ){  //red
+                    instances[arrayIndex].GetComponent<MeshRenderer>().enabled = true;
+                    instances[arrayIndex].GetComponent<Renderer>().material.color = new Color32(255,0,0, 255); 
+                } else if(color.r > 100 && color.g > 100 && color.b < 80){  //yellow
+                    instances[arrayIndex].GetComponent<MeshRenderer>().enabled = true;
+                    instances[arrayIndex].GetComponent<Renderer>().material.color = new Color32(230,230,0, 255);
+                } else if(color.b > 180 && color.r < 80 && color.g <80){  //blue
+                    instances[arrayIndex].GetComponent<MeshRenderer>().enabled = true;
+                    instances[arrayIndex].GetComponent<Renderer>().material.color = new Color32(0,0,255, 255);
+                } else {
+                    instances[arrayIndex].GetComponent<MeshRenderer>().enabled = false;
+                    if(renderOther) {
+                        instances[arrayIndex].GetComponent<MeshRenderer>().enabled = true;
+                        instances[arrayIndex].GetComponent<Renderer>().material.color = new Color32(color.r,color.g,color.b, 255);
+                    }
+                }
+
+                arrayIndex += 1;
+            }  
+        }
+
+        rasterizedTex.Apply();
+        Debug.Log(GetColorOfSelected());   
     }
 }
