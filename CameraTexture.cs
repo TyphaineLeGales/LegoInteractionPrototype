@@ -85,16 +85,14 @@ public class CameraTexture : MonoBehaviour
            for(int x = 0; x< rasterizedTex.width; x++){
                 Color32 color = camTex.GetPixel(x*texScale, y*texScale);
                 rasterizedTex.SetPixel(x, y, color);  
-                if(color.r > 100 && color.g > 100 && color.b > 100) {
-                    instances[arrayIndex].GetComponent<MeshRenderer>().enabled = true;
-                    instances[arrayIndex].GetComponent<Renderer>().material.color = new Color32(255,255,255, 255);      
-                } else if(color.r > 180 && color.g < 80 && color.b <80 ){  //red
+                     
+                if(color.r > 130 && color.g < 80 && color.b <80 ){  //red
                     instances[arrayIndex].GetComponent<MeshRenderer>().enabled = true;
                     instances[arrayIndex].GetComponent<Renderer>().material.color = new Color32(255,0,0, 255); 
-                } else if(color.r > 100 && color.g > 100 && color.b < 80){  //yellow
+                } else if(color.r > 130 && color.g > 130 && color.b < 100){  //yellow
                     instances[arrayIndex].GetComponent<MeshRenderer>().enabled = true;
                     instances[arrayIndex].GetComponent<Renderer>().material.color = new Color32(230,230,0, 255);
-                } else if(color.b > 180 && color.r < 80 && color.g <80){  //blue
+                } else if(color.b > 90 && color.r <80 && color.g <80){  //blue
                     instances[arrayIndex].GetComponent<MeshRenderer>().enabled = true;
                     instances[arrayIndex].GetComponent<Renderer>().material.color = new Color32(0,0,255, 255);
                 } else {
