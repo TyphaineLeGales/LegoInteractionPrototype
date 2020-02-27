@@ -328,8 +328,10 @@ MonoBehaviour:
   debugTex: 0
   rasterized: 1
   texScale: 32
-  prefab: {fileID: 1449671316064593356, guid: ca49dd09da967ad48ac201cf4f588b63, type: 3}
+  prefab: {fileID: 7993674672944522834, guid: 946ddd354fda560419582c843d7394f9, type: 3}
   size: 1
+  renderOther: 0
+  stepMod: 100
 --- !u!23 &2080268950
 MeshRenderer:
   m_ObjectHideFlags: 0

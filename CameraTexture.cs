@@ -60,7 +60,7 @@ public class CameraTexture : MonoBehaviour
     {
        
         if(Time.frameCount % stepMod == 0) {  
-                TexToInstance();
+            TexToInstance();
         }
     }
 
@@ -79,7 +79,7 @@ public class CameraTexture : MonoBehaviour
 
     private void TexToInstance() 
     {
-         pixels = camTex.GetPixels32();
+        pixels = camTex.GetPixels32();
         int arrayIndex = 0;
         for(int y = 0; y< rasterizedTex.height; y++){
            for(int x = 0; x< rasterizedTex.width; x++){
