@@ -26,7 +26,30 @@ public class CameraTexToInstance : MonoBehaviour
     [Range(0,100)]
     public int stepMod = 5;
 
-    // Start is called before the first frame update
+    [Header("Red Calibration")]
+    [Range(100,150)]
+    public int RminRed = 130;
+    [Range(50,100)]
+    public int RmaxGreen = 80;
+    [Range(50,100)]
+    public int RmaxBlue = 80;
+
+    [Header("Blue Calibration")]
+    [Range(100,150)]
+    public int BminBlue = 100;
+    [Range(50,150)]
+    public int BmaxGreen = 80;
+    [Range(50,150)]
+    public int BmaxRed = 80;
+
+    [Header("Yellow Calibration")]
+    [Range(100,150)]
+    public int YminGreen = 110;
+    [Range(50,100)]
+    public int YmaxBlue = 110;
+    [Range(50,100)]
+    public int YminRed = 130;
+
     void Start()
     {
         if(camTex == null)
@@ -68,10 +91,10 @@ public class CameraTexToInstance : MonoBehaviour
         }
     }
 
-    //  private Color32 GetColorOfSelected()
-    // {
-    //     return Selection.activeGameObject.GetComponent<Renderer>().material.color;
-    // }
+     private Color32 GetColorOfSelected()
+    {
+        return Selection.activeGameObject.GetComponent<Renderer>().material.color;
+    }
 
     // private bool isWhite (Color32 color) {
     //      if(color.r > 100 && color.g > 100 && color.b > 100) {
@@ -90,16 +113,16 @@ public class CameraTexToInstance : MonoBehaviour
                 Color32 color = camTex.GetPixel(x*texScale, y*texScale);
                 rasterizedTex.SetPixel(x, y, color);  
                      
-                if(color.r > 130 && color.g < 80 && color.b <80 ){  //red
+                if(color.r > RminRed && color.g < RmaxGreen && color.b < RmaxBlue ){  //red
                     depth = 1;
                     colorInstance = new Color32(255,0,0, 255);
                     // isRendered = true;
-                } else if(color.r > 130 && color.g > 130 && color.b < 110){  //yellow
+                } else if(color.r > YminRed && color.g >YminGreen && color.b < YmaxBlue){  //yellow
                     colorInstance = new Color32(230,230,0, 255);
                     // isRendered = true;
                     depth = 1;
                     //Write is occupied
-                } else if(color.b > 90 && color.r <80 && color.g <80){  //blue
+                } else if(color.b > BminBlue && color.r < BmaxRed && color.g < BmaxGreen){  //blue
                     colorInstance = new Color32(0,0,255, 255);
                     // isRendered = true;
                     depth = 1;
@@ -126,6 +149,8 @@ public class CameraTexToInstance : MonoBehaviour
         }
 
         rasterizedTex.Apply();
-        // Debug.Log(GetColorOfSelected());   
+        if(Selection.activeGameObject != null) {
+            Debug.Log(GetColorOfSelected());   
+        }
     }
 }
