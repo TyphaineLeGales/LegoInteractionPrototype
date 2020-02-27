@@ -11,7 +11,7 @@ public class CameraTexToInstance : MonoBehaviour
     private Color32[] newPixelArray;
     private Transform[] instances;
     private GameObject selected;
-    private int depth;
+    private float depth;
     private Color32 colorInstance;
     bool isRendered;
 
@@ -53,7 +53,7 @@ public class CameraTexToInstance : MonoBehaviour
         int arrayIndex = 0;
         for(int y = 0; y< rasterizedTex.height; y++){
            for(int x = 0; x< rasterizedTex.width; x++){
-            instances[arrayIndex]= Instantiate(prefab, new Vector3(x, depth, y), Quaternion.identity);
+            instances[arrayIndex]= Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity);
             arrayIndex += 1;
            }
         }
@@ -91,33 +91,36 @@ public class CameraTexToInstance : MonoBehaviour
                 rasterizedTex.SetPixel(x, y, color);  
                      
                 if(color.r > 130 && color.g < 80 && color.b <80 ){  //red
-                    depth += 1;
+                    depth = 1;
                     colorInstance = new Color32(255,0,0, 255);
-                    isRendered = true;
-                } else if(color.r > 130 && color.g > 130 && color.b < 100){  //yellow
+                    // isRendered = true;
+                } else if(color.r > 130 && color.g > 130 && color.b < 110){  //yellow
                     colorInstance = new Color32(230,230,0, 255);
-                    isRendered = true;
-                    depth += 1;
+                    // isRendered = true;
+                    depth = 1;
                     //Write is occupied
                 } else if(color.b > 90 && color.r <80 && color.g <80){  //blue
                     colorInstance = new Color32(0,0,255, 255);
-                    isRendered = true;
-                    depth += 1;
+                    // isRendered = true;
+                    depth = 1;
                 } else {
                     depth = 0;
-                    isRendered = false;
+                    colorInstance = new Color32(255,255,255, 255);
+                    // isRendered = false;
                     if(renderOther) {
                       colorInstance = new Color32(color.r,color.g,color.b, 255);
-                      isRendered = true;
+                    //   isRendered = true;
                     }
                 }
 
-                if(isRendered) {
-                    instances[arrayIndex].GetComponent<MeshRenderer>().enabled = true;
+                // if(isRendered) {
+                    // instances[arrayIndex].GetComponent<MeshRenderer>().enabled = true;
                     instances[arrayIndex].GetComponent<Renderer>().material.color = colorInstance;
-                } else {
-                    instances[arrayIndex].GetComponent<MeshRenderer>().enabled = false;
-                }
+                    // instances[arrayIndex].transform.position.y = depth;
+                    instances[arrayIndex].GetComponent<Transform>().position = new Vector3(x, depth, y);
+                // } else {
+                    // instances[arrayIndex].GetComponent<MeshRenderer>().enabled = false;
+                // }
                 arrayIndex += 1;
             }  
         }
